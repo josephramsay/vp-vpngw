@@ -1,16 +1,15 @@
 kind: Service
 apiVersion: v1
 metadata:
+  name: wireguard
   labels:
-    k8s-app: wireguard
-  name: wireguard-service
-  namespace: wireguard
+    app: wireguard
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
-  - port: 51820
-    nodePort: 31820
+  - name: wg
     protocol: UDP
+    port: 51820
     targetPort: 51820
   selector:
     app: wireguard
