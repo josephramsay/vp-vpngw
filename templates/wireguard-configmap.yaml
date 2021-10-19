@@ -13,6 +13,12 @@ data:
     PostUp = wg set wg0 private-key /etc/wireguard/privatekey && iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
     PostDown = iptables -t nat -D POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 
-    # [Peer]
-    # PublicKey =
-    # AllowedIPs = 10.8.0.2/32
+    [Peer]
+    #AG20J
+    PublicKey = aiw58TEhWgNNUghRXiMot1Kjm2hhoPYWg5aeCBx/kmc=
+    AllowedIPs = 10.8.0.2/32    
+    
+    [Peer]
+    #XRN10P
+    PublicKey = voDNEW576vuHRaG9GSTrJMMpS1FrEAQCo0jnkRQyGkU=
+    AllowedIPs = 10.8.0.3/32

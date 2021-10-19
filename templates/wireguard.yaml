@@ -33,7 +33,7 @@ spec:
           command:
           - sh
           - -c
-          - echo "Public key '$(wg pubkey < /etc/wireguard/privatekey)'" && /entrypoint.sh
+          - echo "Public key '$(wg pubkey < /etc/wireguard/privatekey | tee /etc/wireguard/publickey)'" && /entrypoint.sh
           ports:
           - containerPort: 51820
             protocol: UDP

@@ -6,11 +6,20 @@ metadata:
   labels:
     app: wireguard
 spec:
-  type: LoadBalancer
+
+  #LB for EKS might not be supported over UDP. 
+  #type: LoadBalancer
+  #ports:
+  #- name: wg
+  #  protocol: UDP
+  #  port: 51820
+  #  targetPort: 51820
+  type: NodePort
   ports:
   - name: wg
     protocol: UDP
     port: 51820
     targetPort: 51820
+    nodePort: 31820
   selector:
     app: wireguard
