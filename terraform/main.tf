@@ -1,17 +1,4 @@
-variable "namespace" {
-  type = string
-  default = "vp-wgvpn"
-}
-
-variable "cidr" {
-  type = string
-  default = "192.168.1.0/24"
-}
-
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
+# Resource, Wireguard Repo
 resource "aws_eip" "wireguard" {
   vpc = true
   tags = {
@@ -36,7 +23,7 @@ resource "aws_vpc" "vp-wgvpn-vpc" {
 # Public Subnet
 resource "aws_subnet" "vp-wgvpn-public-subnet" {
   count                   = 3
-  cidr_block              = tolist(var.publicSubnetCIDR)[count.index]
+  cidr_block              = tolist(var.public-subnet-cidr)[count.index]
   vpc_id                  = aws_vpc.vp-wgvpn-vpc.id
   map_public_ip_on_launch = true
   availability_zone       = data.aws_availability_zones.available.names[count.index]
@@ -53,7 +40,7 @@ resource "aws_subnet" "vp-wgvpn-public-subnet" {
 # Private Subnet
 resource "aws_subnet" "vp-wgvpn-private-subnet" {
   count             = 3
-  cidr_block        = tolist(var.privateSubnetCIDR)[count.index]
+  cidr_block        = tolist(var.private-subnet-cidr)[count.index]
   vpc_id            = aws_vpc.vp-wgvpn-vpc.id
   availability_zone = data.aws_availability_zones.available.names[count.index]
 
