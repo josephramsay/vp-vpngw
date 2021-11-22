@@ -8,6 +8,10 @@ variable "cidr" {
   default = "192.168.1.0/24"
 }
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 resource "aws_eip" "wireguard" {
   vpc = true
   tags = {
@@ -35,11 +39,11 @@ resource "aws_subnet" "vp-wgvpn-public-subnet" {
   cidr_block              = tolist(var.publicSubnetCIDR)[count.index]
   vpc_id                  = aws_vpc.vp-wgvpn-vpc.id
   map_public_ip_on_launch = true
-  availability_zone       = data.aws_availability_zones.availableAZ.names[count.index]
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
 
   tags = {
     Name = "${var.namespace}-public-subnet-${count.index + 1}"
-    AZ   = data.aws_availability_zones.availableAZ.names[count.index]
+    AZ   = data.aws_availability_zones.available.names[count.index]
     Namespace = var.namespace
   }
 
@@ -50,12 +54,12 @@ resource "aws_subnet" "vp-wgvpn-public-subnet" {
 resource "aws_subnet" "vp-wgvpn-private-subnet" {
   count             = 3
   cidr_block        = tolist(var.privateSubnetCIDR)[count.index]
-  vpc_id            = aws_vpc.vpc.id
-  availability_zone = data.aws_availability_zones.availableAZ.names[count.index]
+  vpc_id            = aws_vpc.vp-wgvpn-vpc.id
+  availability_zone = data.aws_availability_zones.available.names[count.index]
 
   tags = {
     Name = "${var.namespace}-private-subnet-${count.index + 1}"
-    AZ   = data.aws_availability_zones.availableAZ.names[count.index]
+    AZ   = data.aws_availability_zones.available.names[count.index]
     Namespace = var.namespace
   }
 
@@ -95,7 +99,7 @@ resource "aws_nat_gateway" "vp-wgvpn-nat-gateway" {
 
   tags = {
     Name = "${var.namespace}-nat-gateway-${count.index + 1}"
-    AZ   = data.aws_availability_zones.availableAZ.names[count.index]
+    AZ   = data.aws_availability_zones.available.names[count.index]
     Namespace = var.namespace
   }
 
@@ -141,7 +145,7 @@ resource "aws_route_table" "vp-wgvpn-private-route-table" {
 
   tags = {
     Name = "${var.namespace}-private-route-table-${count.index + 1}"
-    AZ   = data.aws_availability_zones.availableAZ.names[count.index]
+    AZ   = data.aws_availability_zones.available.names[count.index]
     Namespace = var.namespace
   }
 
