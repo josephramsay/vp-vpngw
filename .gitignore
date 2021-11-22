@@ -1,1 +1,4 @@
 .private.key
+.DS_Store
+setup/NOTES
+terraform/.terraform
