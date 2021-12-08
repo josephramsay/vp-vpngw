@@ -18,7 +18,7 @@ RUN \
   apt-get install -y build-essential && \
   apt-get install -y tzdata && \
   apt-get install -y software-properties-common && \
-  apt-get install -y byobu curl git htop man unzip vim wget && \
+  apt-get install -y byobu curl git htop man unzip vim wget zsh && \
   rm -rf /var/lib/apt/lists/*
 
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
@@ -32,8 +32,12 @@ RUN apt-get update && \
   apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
   apt-get update && \
   apt-get install terraform && \
-  terraform -install-autocomplete
+  terraform -install-autocomplete && \
+  echo 'alias tf=terraform' >> ~/.zshrc && \
+  echo 'alias ti="terraform init"' >> ~/.zshrc && \
+  echo 'alias tp="terraform plan"' >> ~/.zshrc
 
+RUN apt-get install jq wireguard
   
 # Set environment variables.
 ENV HOME /root
@@ -42,5 +46,5 @@ ENV HOME /root
 WORKDIR /root
 
 # Define default command.
-CMD ["bash"]
+CMD ["zsh"]
 

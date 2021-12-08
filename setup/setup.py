@@ -94,7 +94,7 @@ class Test:
     def testconn(self):
         s = Settings()
         print (s.session.region_name)
-        print (s.session.get_credentials())
+        print (s.session.get_credentials().access_key)
         print (
             jq.compile('.Vpcs[].VpcId').input(json.dumps(s.ec2.describe_vpcs(),indent=2)).text()
         )
